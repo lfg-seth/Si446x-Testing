@@ -18,8 +18,13 @@ The goal is to have a message typed into the console of the computer connected t
 - [Wireless Development Suite](https://www.silabs.com/documents/login/software/WDS3-Setup.exe) (Official Version)
 
 ## Wireless Development Suite
-This is the software used to create modem_params.h.  
-More info can be found in [AN633 Programming Guide and Sample Code](Docs/AN625%20Si446x%20API%20Descriptions.pdf?page=19)
+This software was found by searching "Wireless Development Suite on [silabs.com](silabs.com) and clicking on the first link.
+It does require that you be signed in to download, but an account can be made with no requirements. 
+Once signed in, the download will start.
+This is the software used to create radio_config.h.  
+As of now this isn't used, and the config is just set manually to use the packet handler in the default setup. But this can be used to create different configurations.
+
+More info can be found in [AN633 Programming Guide and Sample Code](Docs/AN625%20Si446x%20API%20Descriptions.pdf) page 19
 
 ## Pin Connections
 
@@ -51,5 +56,24 @@ Note: The current version of the code is only a boilerplate and requires specifi
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
+MIT License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+Copyright (c) 2023 Seth Smith
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
