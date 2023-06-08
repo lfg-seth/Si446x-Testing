@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)https://blog.zakkemble.net/si4463-radio-library-avr-arduino/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="keywords" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="prefer-datetime-locale" content="en-gb">
+<meta name="generator" content="Zak&#39;s Terrible SSG v0.1.0">
+<link rel="canonical" href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/">
+<meta name="author" content="Zak Kemble">
+<meta name="description" content="A library for the Si4463 radio IC, for use with AVR and Arduino.">
+<meta property="og:url" content="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/">
+<meta property="og:description" content="A library for the Si4463 radio IC, for use with AVR and Arduino.">
+<meta property="og:title" content="Si4463 Radio Library for AVR and Arduino">
+<meta property="og:site_name" content="Zak&#39;s Electronics Blog">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://blog.zakkemble.net/wp-content/uploads/2017/08/PICT5030-300x225.jpg">
+<meta property="og:image:width" content="300">
+<meta property="og:image:height" content="225">
+<meta name="twitter:site" content="@ZakKemble">
+<meta name="twitter:creator" content="@ZakKemble">
+<meta name="twitter:card" content="summary_large_image">
+<script async="" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/universal.js.download"></script><script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Zak Kemble"},"dateModified":"2017-08-16T21:55:31Z","datePublished":"2017-08-16T21:55:31Z","description":"A library for the Si4463 radio IC, for use with AVR and Arduino.","headline":"Si4463 Radio Library for AVR and Arduino","image":{"path":"/wp-content/uploads/2017/08/PICT5030-300x225.jpg","width":300,"height":225,"alt":"","@type":"imageObject"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zakkemble.net/si4463-radio-library-avr-arduino/"},"url":"https://blog.zakkemble.net/si4463-radio-library-avr-arduino/"}
+</script>
+<link rel="shortcut icon" href="https://blog.zakkemble.net/favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" sizes="180x180" href="https://blog.zakkemble.net/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.zakkemble.net/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.zakkemble.net/favicon-16x16.png">
+<link rel="manifest" href="https://blog.zakkemble.net/site.webmanifest">
+<meta name="apple-mobile-web-app-title" content="Zak&#39;s Electronics Blog">
+<meta name="application-name" content="Zak&#39;s Electronics Blog">
+<meta name="msapplication-config" content="/browserconfig.xml">
+<link href="https://blog.zakkemble.net/feed/" type="application/atom+xml" rel="alternate" title="Feed">
+<link rel="stylesheet" href="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/css2">
+<link rel="stylesheet" type="text/css" href="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/style.css">
+<link rel="stylesheet" href="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<!--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>-->
+<script src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/jquery.min.js.download" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/comments.js.download"></script>
+<!--<script>hljs.highlightAll();</script>-->
+<title>Si4463 Radio Library for AVR and Arduino | Zak's Electronics Blog</title>
+<script>
+(function (s, e, n, d, er) {
+s['Sender'] = er;
+s[er] = s[er] || function () {
+(s[er].q = s[er].q || []).push(arguments)
+}, s[er].l = 1 * new Date();
+var a = e.createElement(n),
+m = e.getElementsByTagName(n)[0];
+a.async = 1;
+a.src = d;
+m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://cdn.sender.net/accounts_resources/universal.js', 'sender');
+sender('1428d8f92c2781');
+</script>
+</head>
+<body>
+<script async="" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/js"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-F3DC1V2B20');
+</script>
+<!--
+<script>
+function removeUtmParams()
+{
+function paramIsNotUtm(param) { return param.slice(0, 4) !== 'utm_'; }
+if (history && history.replaceState && location.search)
+{
+var params = location.search.slice(1).split('&');
+var newParams = params.filter(paramIsNotUtm);
+if (newParams.length < params.length)
+{
+var search = newParams.length ? '?' + newParams.join('&') : '';
+var url = location.pathname + search + location.hash;
+history.replaceState(null, null, url);
+}
+}
+}
+</script>
+-->
+<div>
+<header>
+<nav>
+<div>
+<div class="avatar">
+<a href="https://blog.zakkemble.net/">
+<img src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/avatar.jpg" alt="avatar" width="100" height="100">
+</a>
+</div>
+<div class="header">
+<div>
+<div>
+<label for="tgl-menu"><i class="fa-fw fas fa-bars"></i></label>
+<h1><a href="https://blog.zakkemble.net/">Zak's Electronics Blog</a></h1>
+</div>
+<div class="soc">
+<a href="https://github.com/ZakKemble" aria-label="github" target="_blank" rel="noopener">
+<i class="fa-fw fab fa-github wiggle"></i>
+</a>
+<a href="https://twitter.com/ZakKemble" aria-label="twitter" target="_blank" rel="noopener">
+<i class="fa-fw fab fa-twitter wiggle"></i>
+</a>
+<a href="https://www.youtube.com/user/ZakKemble" aria-label="youtube" target="_blank" rel="noopener">
+<i class="fa-fw fab fa-youtube wiggle"></i>
+</a>
+<a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" id="emailsubscribe2" aria-label="subscribe">
+<i class="fa-fw fas fa-bell wiggle"></i>
+</a>
+<a href="https://blog.zakkemble.net/feed/" aria-label="rss">
+<i class="fa-fw fas fa-rss wiggle"></i>
+</a>
+<!--<button class="mode-toggle btn" aria-label="Switch Mode">
+<i class="fa-fw fas fa-adjust wiggle"></i>
+</button>
+<span class="icon-border"></span>-->
+</div>
+</div>
+<div class="headersecond">
+<div class="headermenu2"><input type="checkbox" autocomplete="off" class="tgl-dropdown" id="tgl-menu">
+<div class="headermenu">
+<ul>
+<li class="dropdownlist">
+<label for="tgl-dropdown-projects">
+<i class="fa-fw fas fa-wrench wiggle"></i>
+<span>PROJECTS</span>
+</label>
+<input type="checkbox" autocomplete="off" class="tgl-dropdown" id="tgl-dropdown-projects">
+<div class="dropdownitems">
+<a href="https://blog.zakkemble.net/mail-notifier-wifi-edition/">Mail Notifier - WiFi Edition</a>
+<a href="https://blog.zakkemble.net/routerpi-compute-module-4-router/">RouterPi - A Compute Module 4 Router</a>
+<a href="https://blog.zakkemble.net/iot-and-a-door-entry-system/">IoT and a Door Entry System</a>
+<a href="https://blog.zakkemble.net/rpi4-pci-express-bridge-chip/">Raspberry Pi 4 PCI-Express Bridge “Chip”</a>
+<a href="https://blog.zakkemble.net/smart-power-bank-keep-alive/">Smart Power Bank Keep-Alive</a>
+<a href="https://blog.zakkemble.net/remote-mail-notifier-and-gps-tracker/">Remote Mail Notifier (and GPS Tracker)</a>
+<a href="https://blog.zakkemble.net/laptop-bench-power-supply/">Laptop Bench Power Supply</a>
+<a href="https://blog.zakkemble.net/a-tiny-electronic-dice/">A Tiny Electronic Dice</a>
+<a href="https://blog.zakkemble.net/car-rev-alarm-and-gear-indicator/">Car Rev Alarm and Gear Indicator</a>
+<a href="https://blog.zakkemble.net/nwatch-wristwatch-kit/">N|Watch - DIY Wristwatch Kit</a>
+<a href="https://blog.zakkemble.net/diy-digital-wristwatch/">DIY Digital Wristwatch</a>
+<a href="https://blog.zakkemble.net/usb-power-switch-and-filter/">USB Power Switch and Filter</a>
+<a href="https://blog.zakkemble.net/bluetooth-net-monitor/">Bluetooth Net Monitor</a>
+<a href="https://blog.zakkemble.net/avr-usb-rgb-led-controller/">AVR USB RGB LED Controller</a>
+<a href="https://blog.zakkemble.net/cpu-usage-leds/">CPU Usage LEDs</a>
+<a href="https://blog.zakkemble.net/avr-microcontroller-based-pwm-fan-controllers/">AVR microcontroller based PWM fan controllers</a>
+</div>
+</li>
+<li class="dropdownlist">
+<label for="tgl-dropdown-software">
+<i class="fa-fw fas fa-hat-wizard wiggle"></i>
+<span>SOFTWARE</span>
+</label>
+<input type="checkbox" autocomplete="off" class="tgl-dropdown" id="tgl-dropdown-software">
+<div class="dropdownitems">
+<a href="https://blog.zakkemble.net/avrdudess-a-gui-for-avrdude/">AVRDUDESS - A GUI for AVRDUDE</a>
+<a href="https://blog.zakkemble.net/avr-gcc-builds/">AVR-GCC 12.1.0 for Windows 32 and 64 bit</a>
+</div>
+</li>
+<li class="dropdownlist">
+<label for="tgl-dropdown-libraries">
+<i class="fa-fw fas fa-book wiggle"></i>
+<span>LIBRARIES</span>
+</label>
+<input type="checkbox" autocomplete="off" class="tgl-dropdown" id="tgl-dropdown-libraries">
+<div class="dropdownitems">
+<a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/">Si4463 Radio Library for AVR and Arduino</a>
+<a href="https://blog.zakkemble.net/nrf905-avrarduino-librarydriver/">nRF905 Radio Library for AVR and Arduino</a>
+<a href="https://blog.zakkemble.net/mcp2221-hid-library/">MCP2221 HID Library</a>
+<a href="https://blog.zakkemble.net/millisecond-tracking-library-for-avr/">Millisecond tracking library for AVR</a>
+</div>
+</li>
+<li class="dropdownlist">
+<label for="tgl-dropdown-howto">
+<i class="fa-fw fas fa-question wiggle"></i>
+<span>HOW-TO</span>
+</label>
+<input type="checkbox" autocomplete="off" class="tgl-dropdown" id="tgl-dropdown-howto">
+<div class="dropdownitems">
+<a href="https://blog.zakkemble.net/rpi-compiling-a-module-for-the-64-bit-kernel/">Raspberry Pi - Compiling a Module for the 64-bit Kernel</a>
+<a href="https://blog.zakkemble.net/a-lithium-battery-charger-with-load-sharing/">A Lithium Battery Charger with Load Sharing</a>
+<a href="https://blog.zakkemble.net/modifying-ram-spd-data/">Modifying RAM SPD Data</a>
+<a href="https://blog.zakkemble.net/getting-bluetooth-modules-talking-to-each-other/">Getting Bluetooth modules talking to each other</a>
+</div>
+</li>
+<li class="dropdownlist">
+<label for="tgl-dropdown-morestuff">
+<i class="fa-fw fas fa-infinity wiggle"></i>
+<span>MORE STUFF</span>
+</label>
+<input type="checkbox" autocomplete="off" class="tgl-dropdown" id="tgl-dropdown-morestuff">
+<div class="dropdownitems">
+<a href="https://blog.zakkemble.net/repairing-a-samsung-ht-c460-home-cinema-system/">Repairing a Samsung HT-C460 Home Cinema System</a>
+<a href="https://blog.zakkemble.net/ic-samples/">IC samples</a>
+<a href="https://blog.zakkemble.net/lcd-image-viewer/">LCD Image Viewer</a>
+<a href="https://blog.zakkemble.net/first-time-with-arduino-and-avr-microcontrollers/">First time with Arduino and AVR microcontrollers</a>
+<a href="https://blog.zakkemble.net/ir-jammer/">IR jammer</a>
+<a href="https://blog.zakkemble.net/leds-looking-pretty/">LEDs looking pretty</a>
+<a href="https://blog.zakkemble.net/pwm-fan-controllers-using-the-555-timer-ic/">PWM Fan controllers using the 555 timer IC</a>
+<a href="https://blog.zakkemble.net/joule-thief/">Joule Thief</a>
+<a href="https://blog.zakkemble.net/fm-radio-transmitter/">FM Radio Transmitter</a>
+</div>
+</li>
+<!--<li>
+<i class="fa-fw fas fa-info wiggle"></i>
+<a href="/about">ABOUT ME</a>
+</li>-->
+</ul>
+</div></div>
+<div class="donate">
+<a href="https://donate.zakkemble.net/blog/" target="_blank" rel="noopener noreferrer">
+<img src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/btn_donateCC_LG.gif" alt="Donate">
+</a>
+</div>
+</div>
+</div>
+</div>
+</nav>
+</header><main>
+			<article class="post" id="post-data" data-id="2547">
+	<h1>Si4463 Radio Library for AVR and Arduino</h1>
+	<div class="post-meta">
+		<div>
+			<i class="far fa-calendar fa-fw"></i>
+			<em>16 Aug 2017</em>
+		</div>
+	</div>
+	<div class="content">
+		
+<p>
+This is a library for use with the <a href="https://www.silabs.com/wireless/proprietary/ezradiopro-sub-ghz-ics/device.si4463" target="_blank" rel="nofollow noopener noreferrer">Si4463 radio IC from Silicon Labs</a>, used (or will soon be) in some of my projects. The Si4463 is configurable in a ton of different ways with options for modulation, packet format, CRC algorithms and has a high output power of up to +20dBm (100mW). The Si4463 is used in a number of pre-made modules like the <a href="https://www.hoperf.com/modules/rf_transceiver/RFM26BW.html" target="_blank" rel="nofollow noopener noreferrer">HopeRF RFM26W</a> and <a href="https://www.tindie.com/products/DORJI_COM/433mhz-wireless-rf-si4463-transceiver-module/" target="_blank" rel="nofollow noopener noreferrer">Dorji_Com DRF4463F</a>. The whole range of Si446x transceivers should also work with this library.
+</p>
+<!--more-->
+
+<p>
+This library configures the chip to send and receive variable length packets of up to 128 bytes and uses callback functions for when events occur, such as receiving a new packet and completing a packet transmission. The callback functions run straight from the interrupt routine allowing the program to react much faster to events than if the library was polled.
+</p>
+
+<p>
+<strong>Download from <a href="https://github.com/ZakKemble/Si446x" target="_blank" rel="nofollow noopener noreferrer">GitHub</a></strong><br>
+<strong><a href="https://zakkemble.github.io/Si446x/" target="_blank" rel="nofollow noopener noreferrer">Documentation</a></strong>
+</p>
+
+<h2>Pinout</h2>
+
+<table class="data">
+	<tbody><tr>
+		<th>Si4463</th>
+		<th>ATmega328</th>
+		<th>Arduino Uno</th>
+		<th>Arduino Mega</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>VCC</td>
+		<td>3.3V</td>
+		<td>3.3V</td>
+		<td>3.3V</td>
+		<td><strong>Power</strong> (3.3V)</td>
+	</tr>
+	<tr>
+		<td>GPIO0</td>
+		<td>-</td>
+		<td>-</td>
+		<td>-</td>
+		<td>-</td>
+	</tr>
+	<tr>
+		<td>GPIO1</td>
+		<td>-</td>
+		<td>-</td>
+		<td>-</td>
+		<td>-</td>
+	</tr>
+	<tr>
+		<td>SDO</td>
+		<td>B4 (18)</td>
+		<td>12</td>
+		<td>50</td>
+		<td><strong>SPI MISO</strong></td>
+	</tr>
+	<tr>
+		<td>SDI</td>
+		<td>B3 (17)</td>
+		<td>11</td>
+		<td>51</td>
+		<td><strong>SPI MOSI</strong></td>
+	</tr>
+	<tr>
+		<td>SCLK</td>
+		<td>B5 (19)</td>
+		<td>13</td>
+		<td>52</td>
+		<td><strong>SPI SCK</strong></td>
+	</tr>
+	<tr>
+		<td>NSEL</td>
+		<td>B2 (16)</td>
+		<td>10</td>
+		<td>10</td>
+		<td><strong>SPI SS</strong></td>
+	</tr>
+	<tr>
+		<td>NIRQ</td>
+		<td>D2 (4)</td>
+		<td>2</td>
+		<td>2</td>
+		<td><strong>Interrupt</strong></td>
+	</tr>
+	<tr>
+		<td>SDN</td>
+		<td>D5 (11)</td>
+		<td>5</td>
+		<td>5</td>
+		<td><strong>Shutdown/reset</strong><br>High = on, Low = off</td>
+	</tr>
+	<tr>
+		<td>GND</td>
+		<td>GND</td>
+		<td>GND</td>
+		<td>GND</td>
+		<td><strong>Ground</strong></td>
+	</tr>
+</tbody></table>
+
+<p>
+The Si4463 is not 5V compatible, you’ll need to do some level conversion to bring the 5V IO voltage down to 3.3V.
+</p>
+
+<h2>Callbacks</h2>
+
+<p>
+This library uses callbacks which are ran when events occur. Since the callbacks run from the interrupt routine be sure that any global variables you use in them are declared ‘volatile’, just as you would when dealing with normal ISRs. These events will wake the microcontroller if it is sleeping. Some callbacks can be turned on and off using <code>Si446x_setupCallback()</code> and <code>Si446x_setupWUT()</code>.
+</p>
+
+<table class="data">
+	<tbody><tr>
+		<th>Event</th>
+		<th>Callback</th>
+		<th>Default setting</th>
+	</tr>
+	<tr>
+		<td>New packet incoming</td>
+		<td>SI446X_CB_RXBEGIN</td>
+		<td>Off</td>
+	</tr>
+	<tr>
+		<td>Valid packet received</td>
+		<td>SI446X_CB_RXCOMPLETE</td>
+		<td>Always enabled</td>
+	</tr>
+	<tr>
+		<td>Invalid packet received</td>
+		<td>SI446X_CB_RXINVALID</td>
+		<td>Always enabled</td>
+	</tr>
+	<tr>
+		<td>Transmission of packet complete</td>
+		<td>SI446X_CB_SENT</td>
+		<td>Off</td>
+	</tr>
+	<tr>
+		<td>Wakeup timer expired</td>
+		<td>SI446X_CB_WUT</td>
+		<td>Off</td>
+	</tr>
+	<tr>
+		<td>Supply voltage below threshold</td>
+		<td>SI446X_CB_LOWBATT</td>
+		<td>Off</td>
+	</tr>
+</tbody></table>
+
+<h2>Wakeup timer (WUT)</h2>
+
+<p>
+The Si4463 can be configured to periodically wake up using the wake up timer (WUT). When the wake up timer is active and the radio is put into sleep mode it consumes a tiny 900nA. When the WUT expires the <code>SI446X_CB_WUT</code> callback is ran. The low battery detector uses the wake up timer to initiate a supply voltage measurement. If the supply voltage is below the threshold set by <code>Si446x_setLowBatt()</code> then the <code>SI446X_CB_LOWBATT</code> callback will be ran.
+</p>
+
+<p>
+Calculating the correct mantissa (M) and exponent (R) values for the WUT can be a little difficult so here’s a calculator:
+</p>
+
+<script>
+function wutCalc()
+{
+	const secs = parseFloat($("#wutcalc_secs").val());
+	let r = 1;
+	let m = 1;
+	let res = 0;
+	let code = "-";
+
+	for(;r<=20;r++)
+	{
+		var tmp = 65535 * ((4 * Math.pow(2, r)) / 32768);
+		if(tmp >= secs)
+		{
+			res = tmp / 65535;m = Math.ceil(secs / res);
+			break;
+		}
+	}
+
+	let realsecs;
+	if(r <= 20)
+	{
+		realsecs = m * ((4 * Math.pow(2, r)) / 32768);
+		code = "Si446x_setupWUT(" + r + ", " + m + ", 0, SI446X_WUT_RUN);";
+	}
+	else
+	{
+		r = "-";
+		m = "-";
+		res = "-";
+		realsecs = "Interval too high";
+	}
+
+	$("#wutcalc_r").val(r);
+	$("#wutcalc_m").val(m);
+	$("#wutcalc_res").val(res);
+	$("#wutcalc_realsecs").val(realsecs);
+	$("#wutcalc_code").text(code);
+}
+</script>
+
+<table class="data">
+	<thead>
+		<tr>
+			<th colspan="2">WUT Calculator</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Interval (seconds)</td>
+			<td><input style="width:98%" id="wutcalc_secs" oninput="wutCalc()" placeholder="Type here"></td>
+		</tr>
+		<tr>
+			<td>R</td>
+			<td><input style="width:98%" id="wutcalc_r" readonly="readonly" value="-"></td>
+		</tr>
+		<tr>
+			<td>M</td>
+			<td><input style="width:98%" id="wutcalc_m" readonly="readonly" value="-"></td>
+		</tr>
+		<tr>
+			<td>Resolution</td>
+			<td><input style="width:98%" id="wutcalc_res" readonly="readonly" value="-"></td>
+		</tr>
+		<tr>
+			<td>Actual interval</td>
+			<td><input style="width:98%" id="wutcalc_realsecs" readonly="readonly" value="-"></td>
+		</tr>
+		<tr>
+			<td colspan="2"><code id="wutcalc_code">-</code></td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>Compatible chips/modules</h2>
+
+<table class="data">
+	<tbody><tr>
+		<th>Device</th>
+		<th>Tested</th>
+	</tr>
+	<tr>
+		<td>Si4460</td>
+		<td>Not tested</td>
+	</tr>
+	<tr>
+		<td>Si4461</td>
+		<td>Not tested</td>
+	</tr>
+	<tr>
+		<td>Si4463</td>
+		<td>Works</td>
+	</tr>
+	<tr>
+		<td>Si4467</td>
+		<td>Not tested</td>
+	</tr>
+	<tr>
+		<td>Si4468</td>
+		<td>Not tested</td>
+	</tr>
+	
+	<tr>
+		<td>HopeRF RFM26W</td>
+		<td>Works</td>
+	</tr>
+	<tr>
+		<td>Dorji_Com DRF4463F</td>
+		<td>Works</td>
+	</tr>
+</tbody></table>
+
+<h2>Radio configuration</h2>
+
+<p>
+The radio configuration is quite complex. <a href="https://www.silabs.com/products/development-tools/software/wireless-development-suite" target="_blank" rel="nofollow noopener noreferrer">Wireless Development Suite (WDS)</a> can be used to create different configuration header files:
+</p>
+
+<ol>
+<li>Open WDS (can sometimes take a while to load, also try clicking on the center logo)</li>
+<li>Choose 'Simulate radio'</li>
+<li>Scroll down and select 'Si4463'</li>
+<li>Make sure the Revision is set to 'C2'</li>
+<li>Click 'Select Radio' button</li>
+<li>Select 'Radio Configuration Application'</li>
+<li>Click 'Select Application' button</li>
+<li>Click Open (top right of the window) and choose config_normal.xml from the GitHub repo</li>
+</ol>
+
+<p>
+<strong>Areas to avoid changing:</strong>
+</p>
+
+<ul>
+<li>Packet tab
+	<ul>
+		<li>Don't change anything in the 'Packet config' and 'Variable length config' tabs</li>
+	</ul>
+</li>
+<li>Interrupt tab
+	<ul>
+		<li>Don't change any of these settings</li>
+	</ul>
+</li>
+<li>GPIO and FRR tab
+	<ul>
+		<li>Only change GPIO 2 and 3 if your module uses different pins for the RF TX/RX switch</li>
+		<li>Don't change NIRQ and SDO</li>
+		<li>Don't change Fast Response Register A and B</li>
+	</ul>
+</li>
+</ul>
+
+<p>
+<strong>To generate the header file containing the new config:</strong>
+</p>
+
+<ol>
+<li>Click 'Generate source' (bottom right)</li>
+<li>Choose 'Save custom radio configuration header file'</li>
+<li>Save the file somewhere</li>
+<li>The generated config file can't be used just yet, WDS has a few options missing. A Perl script (and a Windows .exe version of it) is provided in the GitHub repo - <code>perl radio_config.pl radio_config_Si4463.h radio_config.h</code> will read radio_config_Si4463.h and output to radio_config.h. With the Windows .exe the input header file can be dragged on top of the exe and it will output to radio_config.h. Or to do this manually follow the fix up instructions below, though the manual way won't remove unnecessary settings.</li>
+</ol>
+
+<strong>Manual config header fix up:</strong>
+
+<ol>
+<li>Remove any '#include' lines (usually just 1 around line 41)</li>
+<li>In 'RF_POWER_UP' define change the second value from 0x81 to 0x01 (normal power up without any patch stuff)</li>
+<li>In 'RF_GLOBAL_CONFIG_1' define change the 5th value (GLOBAL_CONFIG) from 0x20 to 0x30 (puts the FIFO into single 129 byte mode)</li>
+<li>In 'RF_PKT_RX_THRESHOLD_12' define change the 6th from last value (PKT_FIELD_2_LENGTH_7_0) from 0x3F to 0x80 (sets max packet length to 128)</li>
+<li>Remove the 'SI446X_PATCH_CMDS' and 'RF_GLOBAL_CONFIG_1_1' lines from the 'RADIO_CONFIGURATION_DATA_ARRAY' define</li>
+</ol>
+
+<p>
+Sometimes the defines may not be called RF_GLOBAL_CONFIG_1 and RF_PKT_RX_THRESHOLD_12, in which case search for the field name instead (GLOBAL_CONFIG or PKT_FIELD_2_LENGTH_7_0) and change the corresponding value.
+</p>
+
+<h2>GPIOs</h2>
+
+<p>
+The Si4463 has 4 GPIO pins (numbered 0 to 3) which can be configured in a number of ways, however 2 of the GPIOs are used to control an RF TX/RX switch on most pre-made modules. By default the library configures GPIO2=HIGH when receiving and GPIO3=HIGH when transmitting, this works for the RFM26W and DRF4463F. Most other modules use this same configuration, but check anyways.
+</p>
+
+<h2>Library Coding Tips</h2>
+
+<ul>
+<li>When the radio is put to sleep with <code>Si446x_sleep()</code> it will automatically wake up when its SPI select line is asserted. Once SPI communication has finished the <code>Si446x_sleep()</code> function must be called again to put it back to sleep.</li>
+<li><code>Si446x_setupWUT()</code> will take 300us to complete if the WUT was previously disabled.</li>
+</ul>
+
+<h2>Range Testing</h2>
+
+<p>
+Using the config_longrange_500 config in the GitHub repo and driving around a fairly flat village/country area I managed to receive a valid packet at 2.2 km (1.37 miles) and 3.79 km (2.36 miles) for an invalid packet. This was done using a 3dBi antenna shown below instead of the sort that are normally supplied with radio modules.
+</p>
+
+<a href="https://blog.zakkemble.net/wp-content/uploads/2017/08/antennas.jpg">
+	<img src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/antennas-300x300.jpg" width="300" height="300" alt="">
+</a>
+
+<figure>
+	<a href="https://blog.zakkemble.net/wp-content/uploads/2017/08/IMG_20170918_124109.jpg">
+		<img src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/IMG_20170918_124109-300x225.jpg" width="300" height="225" alt="">
+	</a>
+	<figcaption>Transmitter setup</figcaption>
+</figure>
+
+<table class="gallery">
+	<tbody><tr>
+		<td>
+			<a href="https://blog.zakkemble.net/wp-content/uploads/2017/08/PICT5021.jpg">
+				<img src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/PICT5021-1024x768.jpg" width="1024" height="768" alt="" style="height:310px">
+			</a>
+		</td>
+		<td>
+			<a href="https://blog.zakkemble.net/wp-content/uploads/2017/08/PICT5030.jpg">
+				<img src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/PICT5030-1024x768.jpg" width="1024" height="768" alt="" style="height:310px">
+			</a>
+		</td>
+	</tr>
+</tbody></table>
+
+	</div>
+	<hr>
+	
+<div class="share-wrapper">
+	<div class="share-label text-muted">Share:</div>
+	<div class="share-icons">
+		
+		
+		
+
+		<a rel="nofollow noopener noreferrer" href="https://twitter.com/intent/tweet?text=Si4463+Radio+Library+for+AVR+and+Arduino+%7C+Zak%27s+Electronics+Blog&amp;url=https%3A%2F%2Fblog.zakkemble.net%2Fsi4463-radio-library-avr-arduino%2F" data-toggle="tooltip" data-placement="top" title="" target="_blank" aria-label="Twitter" data-original-title="Twitter">
+			<i class="fa-fw fab fa-twitter"></i>
+		</a>
+		<a rel="nofollow noopener noreferrer" href="https://www.facebook.com/sharer/sharer.php?title=Si4463+Radio+Library+for+AVR+and+Arduino+%7C+Zak%27s+Electronics+Blog&amp;u=https%3A%2F%2Fblog.zakkemble.net%2Fsi4463-radio-library-avr-arduino%2F" data-toggle="tooltip" data-placement="top" title="" target="_blank" aria-label="Facebook" data-original-title="Facebook">
+			<i class="fa-fw fab fa-facebook-square"></i>
+		</a>
+		<a rel="nofollow noopener noreferrer" href="https://t.me/share/url?url=https%3A%2F%2Fblog.zakkemble.net%2Fsi4463-radio-library-avr-arduino%2F&amp;text=Si4463+Radio+Library+for+AVR+and+Arduino+%7C+Zak%27s+Electronics+Blog" data-toggle="tooltip" data-placement="top" title="" target="_blank" aria-label="Telegram" data-original-title="Telegram">
+			<i class="fa-fw fab fa-telegram"></i>
+		</a>
+		<!--<i id="copy-link" class="fa-fw fas fa-link small" data-toggle="tooltip" data-placement="top" title="" data-title-succeed="Link copied successfully!" data-original-title="Copy link"></i>-->
+	</div>
+</div>
+</article>
+
+<article id="comments">
+
+	<div class="comments_info">
+		<h2 id="comments_count">49 Comments</h2>
+		<p>
+			<a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#respond" class="btn">Skip to comment form</a>
+		</p>
+	</div>
+
+	<div id="comments_container" class=""><ol class="comments-list"><li id="comment-208302" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/6ef6514c29078bed34bef045951b72fd" srcset="https://www.gravatar.com/avatar/6ef6514c29078bed34bef045951b72fd?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Hendrik</span> on <span class="comment-date">December 1, 2017</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208302">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Zak,
+<br>
+<br>I just want to find out if your si4463 Library for Arduino can be used to receive in RAW/Direct mode?
+<br>
+<br>Thanks
+<br>Hendrik</p></div><ol class="children"><li id="comment-208304" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">December 3, 2017</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208304">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hey Hendrik, no the library only supports packet mode. Direct mode requires code to read and write to a GPIO pin on the module. Though, you might be able use this library to configure the module and then use VirtualWire (http://www.airspayce.com/mikem/arduino/VirtualWire/) to send and receive the data.</p></div></li></ol></li><li id="comment-208336" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/c44068107038f50bf5f2f3efaf342003" srcset="https://www.gravatar.com/avatar/c44068107038f50bf5f2f3efaf342003?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Tri Dao</span> on <span class="comment-date">January 12, 2018</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208336">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>WOA...this is all things I need, I'm Viet Nam with limitted sources about this chip, and I'm finding docs for my RF projects (I have some modules Si4464 and they're OK)
+<br>I'm gona working hard with your project and it will take me a long time because I only have a little bit  experiments about Si446x and coding with them ! :D 
+<br>Anyways...Thanks you so much, Zak!</p></div></li><li id="comment-208348" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/7b9ab5451110d8f9816751f6af4f27ab" srcset="https://www.gravatar.com/avatar/7b9ab5451110d8f9816751f6af4f27ab?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Puls Flag</span> on <span class="comment-date">January 29, 2018</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208348">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Zak,
+<br>this seems to be a great work!
+<br>I'll try to get it work with the Si4460....
+<br>
+<br>Can the NIRQ-Pin be used with  PCINT1_vect  = Vectror Number 5 (ATmega 328) ?
+<br>
+<br>Many Thanks!
+<br>Puls</p></div><ol class="children"><li id="comment-208353" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">February 1, 2018</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208353">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hey Puls,<br>The interrupt define value is the INTx number, not the raw vector number, so 5 won't work, only 0 and 1 for the mega328. You'll need to modify the library a little to use PCINTx.<br>Modify Si446x_irq_off() and Si446x_irq_on() to use the correct registers and bits for PCINT1, and change the ISR vector name near the bottom of the library code to use PCINT1_vect. I think that's it.</p></div></li></ol></li><li id="comment-208356" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/7b9ab5451110d8f9816751f6af4f27ab" srcset="https://www.gravatar.com/avatar/7b9ab5451110d8f9816751f6af4f27ab?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Puls Flag</span> on <span class="comment-date">February 2, 2018</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208356">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hey Zak,
+<br>great, works fine!
+<br>And all my SPI stuff, like display, also works fine. That's really great!  
+<br>
+<br>But I got an issue using the UART library of Peter Fleury ( http://homepage.hispeed.ch/peterfleury/avr-software.html ).
+<br>Waiting for RF data using     while(pingInfo.ready == PACKET_NONE);    the UART doesn't seem to react to any external input correctly anymore. The UART0_RECEIVE_INTERRUPT  Peter is using, seems to work on incomming data, but reading the RX receive buffer, it always shows only a size of 2 counts, although it should be 9 (in my case).
+<br>Commenting out the line with waiting for RF data, all UART stuff works fine again...
+<br>Do you have any idea what to do, as UART-communication would be really useful?
+<br>
+<br>Many thanks and once again: 
+<br>You did an awesome job!!
+<br>Puls</p></div><ol class="children"><li id="comment-208357" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">February 3, 2018</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208357">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>while(pingInfo.ready == PACKET_NONE) will block the program until a packet is received, which also includes reading from the UART library buffer (though it should be able to buffer up to 32 characters by default, not sure why yours is only going to 2). It can be made non-blocking pretty easily by placing all the Si446x example code in the main while(1) loop into in if(pingInfo.ready != PACKET_NONE){ (code here) } and then have your stuff after the if().</p></div></li></ol></li><li id="comment-208401" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/04dfd3e919574f38625bb671ea4e9887" srcset="https://www.gravatar.com/avatar/04dfd3e919574f38625bb671ea4e9887?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Sachin</span> on <span class="comment-date">March 23, 2018</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208401">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Zac,
+<br>
+<br>The  Windows  .exe  file to convert the WDS generated file no longer works. I am using WDS version 3.2.11.0. Any idea why? Please let me know,
+<br>
+<br>Thanks,
+<br>Kind Regards,
+<br>Sachin</p></div><ol class="children"><li id="comment-208402" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">March 23, 2018</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208402">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hey Sachin, in what why does the .exe not work, what does it say? WDS 3.2.11.0 is the version I've been using too.</p></div></li></ol></li><li id="comment-208445" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/1498ab591e8d94acd56d612d2c15277e" srcset="https://www.gravatar.com/avatar/1498ab591e8d94acd56d612d2c15277e?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Saurav Paudel</span> on <span class="comment-date">May 14, 2018</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208445">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Can we set frequency of transmission by calling any function directly?</p></div><ol class="children"><li id="comment-208446" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">May 14, 2018</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208446">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hey Saurav, no not in this library. Changing the frequency isn't as simple as setting a single register like on some RF chips. The Si4463 needs to have a bunch of PLL synthesizer fractional and divider values and probably more things calculated. So instead the library just uses channels, which by default has a base frequency of 433MHz and each channel increments by 250KHz.</p></div><ol class="children"><li id="comment-208447" class="comment depth-3 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/1498ab591e8d94acd56d612d2c15277e" srcset="https://www.gravatar.com/avatar/1498ab591e8d94acd56d612d2c15277e?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Saurav Paudel</span> on <span class="comment-date">May 14, 2018</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208447">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Ahh got it, Thank You.</p></div></li></ol></li></ol></li><li id="comment-208448" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/7b9ab5451110d8f9816751f6af4f27ab" srcset="https://www.gravatar.com/avatar/7b9ab5451110d8f9816751f6af4f27ab?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Puls Flag</span> on <span class="comment-date">May 14, 2018</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208448">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Zak,
+<br>
+<br>last time I build up a transmission with 2 HOPE RFM24W modules at 868MHz and transferring data with your library worked quite fine.
+<br>Now I build my own module with an Si4460 rev. b1 (which is used in RFM24W module), but no data transmission is possible with the RFM24W module.
+<br>The RFM24W module uses a 30MhZ external crystal and my setup uses a 26MHz crystal, as suggested by silabs.
+<br>I modified the WDS file for my setup and used a simple RF-explorer to see what happens, while being in fast TX-mode.
+<br>Both modules (RFM24W and my setup) show the same transmission frequency at 868,204 MHz with nearly the same signal strength.
+<br>Unfortunately I don't have the equipment to view the RF-data.
+<br>
+<br>Do you have any idea where I go wrong?
+<br>
+<br>Many thanks for your help!
+<br>Puls</p></div><ol class="children"><li id="comment-208449" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">May 15, 2018</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208449">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hah, it's kinda difficult to say whats wrong. Are you able to test a 30MHz crystal on your own module? Try putting your module in receive mode and monitor the RSSI signal level when the RFM24W is transmitting, does your module sense the transmission?</p></div></li></ol></li><li id="comment-208486" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/081ff9e9234abb36a4f84a7096414384" srcset="https://www.gravatar.com/avatar/081ff9e9234abb36a4f84a7096414384?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Alexander</span> on <span class="comment-date">July 3, 2018</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208486">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hello, Zak! You tested this module: E10-433MS1W?
+<br>Based on si4463, spi.
+<br>What is "channels"? You have frequency  table for this?
+<br>Tnx!</p></div><ol class="children"><li id="comment-208487" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">July 3, 2018</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208487">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hey Alexandar, I've not tried that module, I'll buy some and check them out though. Looks like they've got a nice 1W transmit power! The default base frequency for this library is 433MHz with a channel seperation of 250KHz, so channel 0 is 433.00 MHz, channel 10 is 435.50 MHz, upto channel 255 at 496.75 MHz.</p></div></li></ol></li><li id="comment-208489" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/2a0d6b06650ee99281d2496c5c6360f9" srcset="https://www.gravatar.com/avatar/2a0d6b06650ee99281d2496c5c6360f9?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Lo</span> on <span class="comment-date">July 4, 2018</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208489">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>i just see your last reply : the default config for this library is 433M so please ignore the last message regarding carrier wave frequency. I however have another interrogation regarding config file, you mention GPIO2 and GPIO3 as drive lines for the RF switch, the module i am using doesnt have an RF switch, is there anything i can do to disable the switch control without making a new config.h file with the windows only tool?
+<br>Thanks</p></div><ol class="children"><li id="comment-208490" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">July 8, 2018</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208490">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hey Lo, the Si446x_writeGPIO() function can be used to change GPIO settings, you can see it being used in the WUT_ADC_GPIO example.</p></div></li></ol></li><li id="comment-208500" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/ca33ebe18ae6e12df3a5eb9824c8652f" srcset="https://www.gravatar.com/avatar/ca33ebe18ae6e12df3a5eb9824c8652f?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">saikiran</span> on <span class="comment-date">July 24, 2018</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208500">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hello,
+<br>Im getting compilation error when i am going to use this library with one example code which you provided in library file.
+<br>that it is showing as..
+<br>
+<br>C:\Users\lenovo\Documents\Arduino\hardware\Arduino_STM32-master\STM32F1\libraries\Si446x-master\src\Si446x.cpp: In function 'uint8_t Si446x_irq_off()':
+<br>
+<br>C:\Users\lenovo\Documents\Arduino\hardware\Arduino_STM32-master\STM32F1\libraries\Si446x-master\src\Si446x.cpp:182:50: error: 'digitalPinToInterrupt' was not declared in this scope
+<br>
+<br>  detachInterrupt(digitalPinToInterrupt(SI446X_IRQ));
+<br>
+<br>                                                  ^
+<br>
+<br>C:\Users\lenovo\Documents\Arduino\hardware\Arduino_STM32-master\STM32F1\libraries\Si446x-master\src\Si446x.cpp: In function 'void Si446x_irq_on(uint8_t)':
+<br>
+<br>C:\Users\lenovo\Documents\Arduino\hardware\Arduino_STM32-master\STM32F1\libraries\Si446x-master\src\Si446x.cpp:207:51: error: 'digitalPinToInterrupt' was not declared in this scope
+<br>
+<br>   attachInterrupt(digitalPinToInterrupt(SI446X_IRQ), Si446x_SERVICE, FALLING);
+<br>
+<br>
+<br>
+<br>                                                   ^</p></div><ol class="children"><li id="comment-208501" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">July 24, 2018</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208501">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi saikiran, STM32duino doesn't have support for the digitalPinToInterrupt() function. A work around I found is to put this line at the top of Si446x.cpp: <code>#define digitalPinToInterrupt(pin) (pin)</code></p></div></li></ol></li><li id="comment-208673" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/9882b065233b7bfcddf4042ae8665cd7" srcset="https://www.gravatar.com/avatar/9882b065233b7bfcddf4042ae8665cd7?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Max</span> on <span class="comment-date">January 7, 2019</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208673">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Zak,
+<br>I was trying to use your library; I struggled a little bit but in the end I've been able to see some results!
+<br>
+<br>What I am using is a Si4463 @868.3 MHz and I am trying to sniff the packets the thermostat sends to the boiler. Using the scanned, I am able to get high values of RSSI when I change the temperature, but when I try to read the content of the package, it looks like nothing is received.
+<br>
+<br>Big changes in RSSI (from -115 to -72/-70) every time I change the temperature make me believe the board works and it is correctly connected to Arduino Mega.
+<br>
+<br>Could you help me to understand what I am doing wrong? I created a new radio_config using WDS (actually I have 5, i.e. ook, 2/4fsk, 2/4gfsk), crystal @30MHz...but nothing! Any suggestion?
+<br>
+<br>Thanks,
+<br>Max</p></div><ol class="children"><li id="comment-208674" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">January 7, 2019</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208674">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hey Max, you need to know the exact packet structure and other things, like bitrate, encoding (manchester, data whitening), preamble, sync word, variable/fixed packet length, CRC and more. Try opening up the thermostat transmitter or receiver and looking to see what chip it uses and researching it will probably help narrow things down.</p></div></li></ol></li><li id="comment-208681" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/546f0a93f0f1daf636b4bb6e98fbf647.png" srcset="https://www.gravatar.com/avatar/546f0a93f0f1daf636b4bb6e98fbf647?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Coby Levy</span> on <span class="comment-date">January 14, 2019</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208681">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>hi guys,
+<br>first of all thank you for this project, its very helpful.
+<br>
+<br>I have managed to make it work on E10 433MD module.
+<br>the E10 is based on si4463 B1 (other then c1), and with a 26MHZ xtal.
+<br>
+<br>I attached a radio_config file for you, just rename it to radio_config.h and place it in the correct folder.
+<br>
+<br>https://drive.google.com/file/d/1HwzgxRY3-V0SoZKyo3ma5DprzqQkiUwz/view?usp=sharing
+<br>
+<br>cheers.
+<br>Coby.</p></div><ol class="children"><li id="comment-208682" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">January 14, 2019</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208682">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Coby, actually I've only used the B1 revision of the chip. I just found that choosing C1 in WDS seemed to work better and had more options than choosing B1, hah. Could you also share the .xml from WDS that was used to generate the .h? It's easier to see what's changed that way.</p></div></li><li id="comment-209004" class="comment depth-2 odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/a313e391bbefb5b54e59424e0bad00e5" srcset="https://www.gravatar.com/avatar/a313e391bbefb5b54e59424e0bad00e5?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Damien</span> on <span class="comment-date">August 10, 2019</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209004">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Coby Levy, thank you for sharing your config file, that's works fine for me. Could you provide the .xml from WDS please ? Thank you.</p></div><ol class="children"><li id="comment-209006" class="comment depth-3 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/a313e391bbefb5b54e59424e0bad00e5" srcset="https://www.gravatar.com/avatar/a313e391bbefb5b54e59424e0bad00e5?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Damien</span> on <span class="comment-date">August 13, 2019</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209006">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Zak, seriously thank you very much for your work!!
+<br>
+<br>have you an idea why the file of Coby Levy work find??</p></div><ol class="children"><li id="comment-209007" class="comment depth-4 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">August 13, 2019</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209007">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hey Damien, thanks :) Coby hasn't sent any links to the .xml file. Best thing to do would be to install WDS from SiLabs and open one of the provided .xml from the GitHub repo then change the crystal frequency to 26MHz and follow the instructions in the blog post about how to make a usable .h file.</p></div></li></ol></li></ol></li></ol></li><li id="comment-208752" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/9d970fc8e494223fce0d19836feab2fb" srcset="https://www.gravatar.com/avatar/9d970fc8e494223fce0d19836feab2fb?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Dan</span> on <span class="comment-date">March 3, 2019</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208752">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Zak,
+<br>
+<br>Thanks for all your great work on the  Si446x library. I'm attempting to solve the same problem as Max.  I'm using a Si4463 868Mhz module (YJ-14005 revision B1, 30Mhz oscillator) wired to an Arduino Nano and I've copied the RF and packet settings from a set-up I've been using successfully with a Ti CC1101 connected to the Nano.  The messages are 868.3Mhz, 38.383kbps, 2GFSK, 50kHz deviation,  no CRC or whitening. I'm trying a really simple packet structure with just a preamable and one 8-byte fixed length field (no syncword) to attempt to capture part of a more complex packet structure (it actually has a variable length structure with a 5-byte syncword). I've tried both revision C2 and B1 in WDS and made the edits you've described, but I just can't seem to get any notification of successful RX using your callbacks_irq example.   I may not be setting the channel/frequency information correctly as I only seem to be able to detect a signal with weird combinations e.g. base frequency 868Mhz + channels 200-210??
+<br>
+<br>Any ideas where I may be going wrong? Thanks, Dan.</p></div><ol class="children"><li id="comment-208753" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">March 4, 2019</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208753">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hey Dan, without a syncword the radio will have a hard time figuring out where the preamble ends and the data starts. It might be better to have a 1 byte sync and try to guess the correct value (maybe 0xAA or 0x55 so it matches the preamble, then you'll get preample in your data but at least you might see the real sync word in there somewhere), or have the raw data stream outputted to one of the GPIO pins and try to figure things out from that.<br>Also keep the WDS revision as C2, even if you have a B1 chip. I forget why, but I think WDS outputs a more complete set of parameters with C2. I've also only tested the library with B1 chips.</p></div></li></ol></li><li id="comment-208754" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/9d970fc8e494223fce0d19836feab2fb" srcset="https://www.gravatar.com/avatar/9d970fc8e494223fce0d19836feab2fb?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Dan</span> on <span class="comment-date">March 4, 2019</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208754">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Zak,
+<br>I really appreciate you taking the time to respond to my message.  I think I've finally identified the source of my problem which was a really dumb mistake by me! My radio configs were being overwritten when compiling as I had kept the original radio_config_Si4463.h in the same directory as well as my new config file and left both #includes in the code. This meant that each tweak I was making to the packet structure etc was being ignored. It all seems to working OK now and I can make progress on optimising the packet settings.
+<br>Thanks again. Dan</p></div></li><li id="comment-208996" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/49416d9b3309abcf21f7c8b58c31b2ca" srcset="https://www.gravatar.com/avatar/49416d9b3309abcf21f7c8b58c31b2ca?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Alex</span> on <span class="comment-date">August 9, 2019</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208996">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi,
+<br>thank you for the library.
+<br>
+<br>Can you tell me how I change the transmit and receive frequencies?
+<br>
+<br>thanks
+<br>A</p></div><ol class="children"><li id="comment-208997" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">August 9, 2019</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208997">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hey, no problem :) Calculating the correct register values for a frequency is complex with the Si4463, instead the library uses channels when calling Si44x_RX() and Si446x_TX(). With the default configuration, channel 0 is 433.0MHz and each channel is separated by 0.25MHz, up to channel 255 which is 496.75MHz.</p></div><ol class="children"><li id="comment-208999" class="comment depth-3 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/49416d9b3309abcf21f7c8b58c31b2ca" srcset="https://www.gravatar.com/avatar/49416d9b3309abcf21f7c8b58c31b2ca?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Alex</span> on <span class="comment-date">August 9, 2019</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-208999">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Zak,
+<br>I'm using the 868MHz versions of the module, would greatly appreciate if you could advise me how to setup the module to use the channels on this frequency.
+<br>
+<br>thanks again,
+<br>A</p></div><ol class="children"><li id="comment-209000" class="comment depth-4 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">August 9, 2019</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209000">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Check out the "Radio configuration" section of the blog post, you'll need to use the WDS program from SiLabs to generate a config.</p></div></li></ol></li></ol></li></ol></li><li id="comment-209009" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/7b9ab5451110d8f9816751f6af4f27ab" srcset="https://www.gravatar.com/avatar/7b9ab5451110d8f9816751f6af4f27ab?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Puls Flag</span> on <span class="comment-date">August 15, 2019</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209009">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Zak,
+<br>your library is still working great!
+<br>Now I'm playing around optimizing the antenna. 
+<br>Would it be possible to turn ON and OFF only the rf-carrier without sending any data?
+<br>It also would be nice for checking the TX power.
+<br>
+<br>Many thanks!
+<br>Puls</p></div><ol class="children"><li id="comment-209012" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">August 17, 2019</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209012">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Yea, modulation type can be set to continuous-wave and modulation source to pseudo-random. I think sticking this at the end of the Si446x_init() function in the library might to the trick - <code>setProperty((SI446X_PROP_GROUP_MODEM&lt;&lt;8) | 0x00, 0x10);</code>.</p></div></li></ol></li><li id="comment-209106" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/a313e391bbefb5b54e59424e0bad00e5" srcset="https://www.gravatar.com/avatar/a313e391bbefb5b54e59424e0bad00e5?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Damien</span> on <span class="comment-date">December 4, 2019</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209106">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Zak,  after some test  the lib work fine with a radio config normal but I'm obligated to add these lines to the server so that work fine with a radio config longrange
+<br>
+<br>		delay(20);
+<br> 		 Si446x_TX((uint8_t *)data, strlen(data), CHANNEL, SI446X_STATE_RX);
+<br>		delay(50);
+<br>		Si446x_TX((uint8_t *)data, strlen(data), CHANNEL, SI446X_STATE_RX);
+<br>
+<br>I use a E10 433MD module
+<br>
+<br>https://drive.google.com/file/d/1s2gAUdmzSUT4HBQ6xKaeW3oDL0ZbxOIS/view?usp=sharing
+<br>https://drive.google.com/file/d/12-zSlFyPICWJlygKhBowOo0rsSkF83r-/view?usp=sharing</p></div><ol class="children"><li id="comment-209115" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">December 10, 2019</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209115">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hey Damien! You must wait for the current transmission to complete before sending more data, the long range config uses a lower datarate so transmissions take longer! Use the SI446X_CB_SENT() callback to determine when a transmission finishes.</p></div></li></ol></li><li id="comment-209181" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/bbaf7b0967b35c6c1917f1977e50bd05" srcset="https://www.gravatar.com/avatar/bbaf7b0967b35c6c1917f1977e50bd05?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">juan luis</span> on <span class="comment-date">February 22, 2020</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209181">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Zak, I am using the SI4463 and I make all it sais here but the library is not working , it tells me that arduino.h in the si446x doesnt work and make several  omisions in the code. To see and modify the librery i used  visual studio  code to see the library and make the changes , can I be in contact with you via whatsapp  4922003778 or email?</p></div><ol class="children"><li id="comment-209182" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">February 23, 2020</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209182">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hey Jaun, I'd email you but I think hotmail blocks emails from my server for some reason. It sounds like you're using the Arduino version of the library in a non-Arduino environment. Use the non-Arduino library instead, which is in the ./Si446x folder, not in ./arduino/Si446x.</p></div></li></ol></li><li id="comment-209432" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/75381bba10d4ce865d1526f3216e5667" srcset="https://www.gravatar.com/avatar/75381bba10d4ce865d1526f3216e5667?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">max</span> on <span class="comment-date">September 25, 2020</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209432">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hello
+<br>it seems a good work and I'm trying to use it with a wemos 32 (esp32). I just started to find the correct correspondance between the pins and i'm stuck to choose the correct pin for the interrupt in esp32. do you have suggestion? 
+<br>many thanks</p></div><ol class="children"><li id="comment-209434" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">September 25, 2020</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209434">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hey Max, it looks like any pin on the ESP32 can be used as an interrupt pin.</p></div></li></ol></li><li id="comment-209633" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/606df3556d4ca3f84d1665342da190c6" srcset="https://www.gravatar.com/avatar/606df3556d4ca3f84d1665342da190c6?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Will</span> on <span class="comment-date">May 26, 2021</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209633">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Zak,
+<br>
+<br>Thank for your great work!
+<br>
+<br>For this library, could we upgrade to transmit packet over 128 bytes length?
+<br>
+<br>Thanks
+<br>Will</p></div><ol class="children"><li id="comment-209635" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">May 27, 2021</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209635">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hey Will, the Si4463 supports having data sent to the radio module while it is transmitting to create a continous stream of data. So yes, it is possible to modify to library for packets larger than 128 bytes.</p></div><ol class="children"><li id="comment-209649" class="comment depth-3 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/606df3556d4ca3f84d1665342da190c6" srcset="https://www.gravatar.com/avatar/606df3556d4ca3f84d1665342da190c6?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Will</span> on <span class="comment-date">June 9, 2021</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209649">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Zack,
+<br>
+<br>After reference your source, I could transmit/receive data around 200bytes.
+<br>Thanks for your source sharing!
+<br>
+<br>In the SI4463, there is the word "listen before talk functionality", but I cannot find any SiLab's documents related to this topic. Do you have experience about this?
+<br>
+<br>Thanks
+<br>Will</p></div><ol class="children"><li id="comment-209658" class="comment depth-4 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">June 18, 2021</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209658">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>I think the RSSI jump detector needs to be configured to get collision avoidance working.</p></div></li></ol></li></ol></li></ol></li><li id="comment-209773" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/7b9ab5451110d8f9816751f6af4f27ab" srcset="https://www.gravatar.com/avatar/7b9ab5451110d8f9816751f6af4f27ab?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Puls</span> on <span class="comment-date">October 5, 2021</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209773">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>Hi Zak,
+<br>good you are still there! :-)
+<br>
+<br>You set the Maximum packet length to 128 (SI446X_MAX_PACKET_LEN) and looking at the WDS config file, in the Packet Config Tab, the 'Packet TX/RX Threshold is set to 48 Bytes.
+<br>I'm just wondering if this is correct, as I'm not really understanding the threshold feature.
+<br>What would be the difference if a packet length is below or above the threshold?
+<br>
+<br>I'm actually working with packet length of 20 bytes, which works very reliable.
+<br>But I'd need go up to 50 bytes packet length. Would be there any different behaviour or reliability?
+<br>
+<br>Many thanks!
+<br>Puls</p></div><ol class="children"><li id="comment-209776" class="comment depth-2 bypostauthor odd"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/29472aca98cc6bcd8723f3ce7a187e29.jpeg" srcset="https://www.gravatar.com/avatar/29472aca98cc6bcd8723f3ce7a187e29?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Zak Kemble</span> on <span class="comment-date">October 8, 2021</span><br><span class="author-cred">Author</span></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-209776">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p>The threshold thing is for receiving packets larger than the FIFO size of 64 bytes (or 128 in single FIFO mode), but the library doesn't support this so the setting has no effect. The larger the packet the greater the chance of data corruption and losing the entire packet, but otherwise there's no difference in behaviour.</p></div></li></ol></li><li id="comment-300108" class="comment depth-1 even"><div class="comment-meta"><div class="comment-avatar"><img class="avatar avatar-50 photo" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/88e346ada9a83545ddf145107c2ebadb" srcset="https://www.gravatar.com/avatar/88e346ada9a83545ddf145107c2ebadb?s=100&amp;d=retro&amp;r=pg 2x" alt="Avatar" loading="lazy" style="width: 50px; height: 50px;"></div> <div class="comment-attr"><span class="comment-author">Cerix</span> on <span class="comment-date">March 19, 2023</span><br></div> <div class="single-comment-link"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#comment-300108">#</a></div> <div class="comment-reply"><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" class="btn btn-xs comment-reply-link" rel="nofollow">Reply</a></div></div><div class="comment-entry"><p><p>Hello Zak,</p>
+<p>thanx for instructions.</p>
+<p>It is work perfect with custom made pcb with Si4461- B1 868mhz 26mhz crystal , balun and chip antenna. </p>
+</p></div></li></ol></div>
+
+	<ol id="pages_container" class="pagination"><li><span>« Prev</span></li><li><a href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/comment-page-1/" class="curr_page">1</a></li><li><span>Next »</span></li></ol>
+
+	<div id="reply_container">
+		<div id="respond" class="comment-respond">
+			<div><h3 class="comment-reply-title">Leave a Reply</h3><a rel="nofollow" id="cancel-comment-reply-link" class="btn" href="https://blog.zakkemble.net/si4463-radio-library-avr-arduino/#" style="display:none">Cancel reply</a></div>
+			<p>
+				<strong>Sorry, new comments have been disabled since I rearly have time to moderate and reply these days :(</strong>
+			</p>
+		</div>
+	</div>
+
+</article>
+
+			</main></div>
+<footer>
+<div>
+<div>© 2023 Zak Kemble</div>
+<div>
+<a href="https://blog.zakkemble.net/categories/">Categories</a><br>
+<a href="https://blog.zakkemble.net/tags/">Tags</a><br>
+<a href="https://blog.zakkemble.net/archives/">Archives</a><br>
+<a href="https://blog.zakkemble.net/about-me/">About</a>
+</div>
+</div>
+</footer>
+<!-- Cloudflare Pages Analytics --><script defer="" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/beacon.min.js.download" data-cf-beacon="{&quot;token&quot;: &quot;5a325f765bbc4e1d929c6bc2e2f1875e&quot;}"></script><!-- Cloudflare Pages Analytics -->
+<iframe style="overflow: hidden auto; width: 2430px; height: 1578px; position: fixed; top: 0px; left: 0px; border: none; z-index: 9999; max-width: 100%; display: none;" src="./Si4463 Radio Library for AVR and Arduino _ Zak&#39;s Electronics Blog_files/saved_resource.html"></iframe></body></html>
